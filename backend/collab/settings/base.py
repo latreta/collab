@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "import_export",
     "common",
     "users",
+    "commits",
     "repositories"
 ]
 

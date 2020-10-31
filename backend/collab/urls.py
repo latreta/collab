@@ -12,4 +12,6 @@ urlpatterns = [
     path("app/", include("exampleapp.urls"), name="exampleapp"),
     path("admin/", admin.site.urls, name="admin"),
     path("jsreverse/", django_js_reverse.views.urls_js, name="js_reverse"),
+    path("commits/", include("commits.urls"), name="commits"),
+    path("repositories/", include("repositories.urls"), name="repositories")
 ]
