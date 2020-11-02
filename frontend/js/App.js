@@ -40,22 +40,24 @@ const App = (props) => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
+            <Link to="/app/">
               Collab Tracker
+            </Link>
             </Typography>
-            <Link to="/app/repositories" component={Button} color="inherit">
+            <Link to="/app/repositories" color="inherit">
               Repositórios
             </Link>
           </Toolbar>
         </AppBar>
         <div className="p-4 container">
-        <Switch>
-          <Route path="/app/repositories">
-            <RepositoriesList />
-          </Route>
-          <Route path="/app/">
-            <AddRepositoryForm />
-          </Route>
-        </Switch>
+          <Switch>
+            <Route path="/app/repositories">
+              <RepositoriesList />
+            </Route>
+            <Route path="/app/">
+              <AddRepositoryForm />
+            </Route>
+          </Switch>
         </div>
       </div>
     </Router>
