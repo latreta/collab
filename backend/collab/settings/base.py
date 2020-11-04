@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "rest_framework",
+    "rest_framework.authtoken",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -61,6 +62,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "collab.urls"
 
 LOGIN_REDIRECT_URL = "/app/"
+LOGOUT_REDIRECT = "/accounts/login/"
 
 TEMPLATES = [
     {
@@ -85,17 +87,6 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend'
 ]
 
-SOCIALACCOUNT_PROVIDERS = {
-    'github': {
-        'APP': {
-            'client_id': 'a34c343cea954b669716',
-            'secret': '4b10dda7bb844737ff13a36e9fd5fe701e20ca6b',
-            'key': '',
-            'redirect_uri': 'http://127.0.0.1:8000/accounts/github/login/callback/'
-        }
-    }
-}
-
 WSGI_APPLICATION = "collab.wsgi.application"
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -105,7 +96,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "pt-br"
 
 TIME_ZONE = "UTC"
 
