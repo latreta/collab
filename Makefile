@@ -42,7 +42,7 @@ compile_install_requirements:
 	export PIP_REQUIRE_VIRTUALENV=true; \
 	pip install pip-tools
 	@echo 'Compiling requirements...'
-	pip-compile requirements.in > requirements.txt
-	pip-compile dev-requirements.in > dev-requirements.txt
+	pip-compile --output-file requirements.txt requirements.in
+	pip-compile --output-file dev-requirements.txt dev-requirements.in
 	@echo 'Installing requirements...'
 	pip install -r requirements.txt && pip install -r dev-requirements.txt

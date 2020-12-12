@@ -39,6 +39,8 @@ npm-debug.log
 /output/
 /cache/
 boilerplate.zip
+dev-requirements.txt
+requirements.txt
 
 # Spritesmith
 spritesmith-generated/
