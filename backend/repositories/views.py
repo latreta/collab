@@ -13,14 +13,16 @@ def index(request):
     socialToken = SocialToken.objects.filter(account=account)[:1].values("token")
     userToken = socialToken[0]['token']
     g = Github(userToken)
-    specificRepo = g.get_repo("latreta/aulas-api")
+    login = g.get_user().login
+    specificRepo = g.get_repo(f"{login}/aulas-api")
     start_date = datetime.now() - timedelta(150)
     
     for commit in specificRepo.get_commits(since=start_date):
         objectCommit = commit.commit
         print(f'Autor: {objectCommit.author.name}')
         print(f'Data do commit: {objectCommit.author.date}')
-        print(f'Mensagem: {objectCommit.message[:150]}\n')
+        print(f'Mensagem: {objectCommit.message[:100]}\n')
+        print(f'ID do commit: {commit.sha}')
 
     repositories = Repository.objects.all()
-    return HttpResponse(g.get_user().get_repos(), content_type="text/json-comment-filtered")
+    return HttpResponse(repositories, content_type="text/json-comment-filtered")
