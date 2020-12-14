@@ -3,6 +3,7 @@ from django.urls import path, re_path
 from . import views
 
 app_name = 'exampleapp'
+
 urlpatterns = [
-    re_path(r'^', views.IndexView.as_view(), name='index'),
+    re_path(r'^', views.index, name='index'),
 ]

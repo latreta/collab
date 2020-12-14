@@ -27,6 +27,26 @@ const useStyles = makeStyles((theme) => ({
 const App = (props) => {
   const classes = useStyles();
 
+  const csrftoken = getCookie("csrftoken");
+
+  console.log(csrftoken);
+
+  function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+    }
+
   return (
     <Router>
       <div>
@@ -47,6 +67,10 @@ const App = (props) => {
             <Link to="/app/repositories" color="inherit">
               Repositórios
             </Link>
+            <form action="/accounts/logout/" method="POST">
+              <input type="hidden" name="csrfmiddlewaretoken" value={csrftoken}/>
+              <button type="submit">Logout</button>
+            </form>
           </Toolbar>
         </AppBar>
         <div className="p-4 container">
