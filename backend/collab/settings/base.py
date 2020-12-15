@@ -22,7 +22,10 @@ ADMINS = (("Admin", "foo@example.com"), ("latreta", "yveshenr@gmail.com"))
 
 AUTH_USER_MODEL = "users.User"
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1'
+]
 
 INSTALLED_APPS = [
     "exampleapp.apps.ExampleappConfig",
@@ -63,6 +66,8 @@ ROOT_URLCONF = "collab.urls"
 
 LOGIN_REDIRECT_URL = "/app/"
 LOGOUT_REDIRECT = "/accounts/login/"
+
+ACCOUNT_ADAPTER = 'collab.adapters.NoNewUsersAccountAdapter'
 
 TEMPLATES = [
     {
