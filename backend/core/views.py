@@ -5,5 +5,5 @@ from django.template import loader
 
 @login_required()
 def index(request):
-    template = loader.get_template('exampleapp/index.html')
+    template = loader.get_template('core/index.html')
     return HttpResponse(template.render({}, request))
