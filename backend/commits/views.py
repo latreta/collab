@@ -1,9 +1,7 @@
 from django.shortcuts import render  # noqa
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
-
 from .models import Commit
-
 
 
 def index(request):

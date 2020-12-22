@@ -24,7 +24,8 @@ AUTH_USER_MODEL = "users.User"
 
 ALLOWED_HOSTS = [
     'localhost',
-    '127.0.0.1'
+    '127.0.0.1',
+    '*'
 ]
 
 INSTALLED_APPS = [

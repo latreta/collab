@@ -1,9 +1,9 @@
 from django.urls import path, re_path
-
-from . import views
+from .views import PayloadView
 
 app_name = 'core'
 
 urlpatterns = [
-    re_path(r'^', views.index, name='index'),
+    path("webhook/", PayloadView.handle_webhook, name='webhook'),
+    # re_path(r'^', views.index, name='index'),
 ]
