@@ -8,3 +8,9 @@ def index(request):
     commits = Commit.objects.all()
     commits = serializers.serialize("json", commits)
     return HttpResponse(commits, content_type="text/json-comment-filtered")
+
+
+def get_commits(request):
+    commits = Commit.objects.all()
+    commits = serializers.serialize("json", commits)
+    return HttpResponse(commits, content_type="text/json-comment-filtered")

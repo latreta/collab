@@ -5,7 +5,6 @@ from django.shortcuts import redirect
 
 import django_js_reverse.views
 
-
 urlpatterns = [
     path("", lambda request : redirect("/accounts/login")),
     path("accounts/", include("allauth.urls")),

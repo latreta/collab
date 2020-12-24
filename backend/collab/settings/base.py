@@ -29,7 +29,6 @@ ALLOWED_HOSTS = [
 ]
 
 INSTALLED_APPS = [
-    "core.apps.CoreConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -37,6 +36,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+
+    ## Third parties
     "rest_framework",
     "rest_framework.authtoken",
     "allauth",
@@ -46,7 +47,11 @@ INSTALLED_APPS = [
     "django_js_reverse",
     "webpack_loader",
     "import_export",
+
+
+    ## Application Apps
     "common",
+    "core",
     "users",
     "commits",
     "repositories"

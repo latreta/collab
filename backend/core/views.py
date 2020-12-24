@@ -6,6 +6,11 @@ from django.views.decorators.csrf import csrf_exempt
 from github import Github
 import json
 
+from commits.models import Commit
+from repositories.models import Repository
+
+from commits.tasks import save_new_commits
+
 ENDPOINT = 'app/webhook/'
 
 @login_required()
@@ -14,6 +19,11 @@ def index(request):
     return HttpResponse(template.render({}, request))
 
 
+def retrieve_commits(payload):
+    commits = payload['commits']
+    repository = payload['repository']
+    save_new_commits.delay(repository, commits)
+
 @csrf_exempt
 class PayloadView:
 
@@ -21,8 +31,7 @@ class PayloadView:
     def handle_webhook(self):
         payload = json.loads(self.body)
         if 'commits' in payload.keys():
-            commits = payload['commits']
-            print("No. commits in push:", len(commits))
+            retrieve_commits(payload)
         return HttpResponse("Success")
 
     def create_webhook(self):

@@ -1,11 +1,6 @@
-from django.conf.urls import include, url
-from django.shortcuts import redirect
-from django.urls import path
-
-from .views import index
-
-
+from django.urls import path, include
+from .views import index, get_commits
 
 urlpatterns = [
-    path("", index, name="test")
+    path("", get_commits, name="commits_index")
 ]
