@@ -6,8 +6,6 @@ from django.views.decorators.csrf import csrf_exempt
 from github import Github
 import json
 
-from commits.models import Commit
-from repositories.models import Repository
 
 from commits.tasks import save_new_commits
 

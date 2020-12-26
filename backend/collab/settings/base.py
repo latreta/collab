@@ -68,6 +68,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+SOCIALACCOUNT_PROVIDERS = {
+    "github": {
+        "SCOPE": ['repo', 'read:user', 'write:repo_hook']
+    }
+}
+
 ROOT_URLCONF = "collab.urls"
 
 LOGIN_REDIRECT_URL = "/app/"
@@ -109,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "pt-br"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "America/Sao_Paulo"
 
 USE_I18N = True
 
