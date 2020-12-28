@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
     useParams,
   } from 'react-router-dom';
@@ -9,12 +10,9 @@ const RepositoryDetail = (props) => {
     const [repository, setRepository] = useState([]);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/repositories/${id}`)
-        .then(res => res.json())
-        .then((data) => {
-          setRepository(data);
-        })
-        .catch(console.log)
+        axios.get(`http://localhost:8000/repositories/${id}/`)
+        .then(response => setRepository(response.data))
+        .catch(error => console.log(error));
     }, []) 
 
     return (

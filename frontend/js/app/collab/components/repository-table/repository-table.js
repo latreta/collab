@@ -9,17 +9,16 @@ const RepositoryTable = (props) => {
       <thead>
         <tr>
           <th>Repositório</th>
-          <th>Autor</th>
         </tr>
       </thead>
       <tbody>
         {props.repositories.map((repository, index) => {
+          console.log(repository);
           return (
             <tr key={index}>
               <td>
-                <Link to={`${match.url}/${index}`}>{repository.title}</Link>
+                <Link to={`${match.url}/${index}`}>{repository.full_name}</Link>
               </td>
-              <td>{repository.author}</td>
             </tr>
           );
         })}
