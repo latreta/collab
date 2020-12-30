@@ -1,6 +1,8 @@
+import json
+
 from allauth.socialaccount.models import SocialToken, SocialAccount
-from django.http import HttpResponse
-from django.utils.timezone import make_aware
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404
 from github import Github
 from datetime import datetime, timedelta
 from pytz import timezone
@@ -10,16 +12,13 @@ from commits.models import Commit
 
 HOST = 'http://bc7f9734b75a.ngrok.io'
 ENDPOINT = 'app/webhook/'
-
 GMT_TIMEZONE = timezone('GMT')
 SAO_PAULO_TIMEZONE = timezone('America/Sao_Paulo')
-
+EVENTS = ['push']
+HOST = "http://bc7f9734b75a.ngrok.io"
 
 
 def create_webhook(repository):
-    EVENTS = ['push']
-    HOST = "http://bc7f9734b75a.ngrok.io"
-
     config = {
         "url": "http://{host}/{endpoint}".format(host=HOST, endpoint=ENDPOINT),
         "content_type": "json"
@@ -30,8 +29,16 @@ def create_webhook(repository):
 
 def index(request):
     user = request.user
-    repositories = Repository.objects.filter(user_id=user.id)
-    return HttpResponse([repositories], content_type="text/json-comment-filtered")
+    # repositories = Repository.objects.filter(user_id=user)
+    repositories = Repository.objects.all().values()
+    return JsonResponse(list(repositories), safe=False)
+
+
+def detail(request, id):
+    repository = get_object_or_404(Repository, pk=id)
+    resp = json.dumps(repository.toJson(), indent=4)
+    return JsonResponse(resp)
+    # return render(request, 'core/json.html', {'response': repository.__dict__})
 
 
 def get_repository(request):
@@ -41,7 +48,8 @@ def get_repository(request):
     g = Github(userToken)
     start_date = datetime.now() - timedelta(150)
     login = g.get_user().login
-    githubRepository = g.get_repo(f"{request.POST['repository']}")
+    payload = json.loads(request.body)
+    githubRepository = g.get_repo("{usuario}/{repositorio}".format(usuario=login, repositorio=payload['repository']))
 
     # create_webhook(githubRepository)
 

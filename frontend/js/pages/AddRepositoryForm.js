@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const formTitle = 'Cadastrar Repositório';
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
 
 const AddRepositoryForm = () => {
   const [repoName, SetRepoName] = useState('');
 
   const csrftoken = getCookie('csrftoken');
 
+  // TODO: Retirar isso para uma classe separada
   function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -23,14 +28,17 @@ const AddRepositoryForm = () => {
     return "";
     }
 
-  function addRepository() {
-    console.log(repoName);
+  function addRepository(event) {
+    event.preventDefault();
+    axios.post("http://127.0.0.1:8000/api/repositories/criar/", {
+      repository: repoName
+    },)
+    .then(response => console.log(response))
+    .catch(error => console.error(error));
   }
 
   return (
-    <form
-      action="http://127.0.0.1:8000/repositories/criar/" method="POST"
-    >
+    <form onSubmit={addRepository}>
       <div className="col-sm-12">
         <h2 className="m-5">{formTitle}</h2>
         <label>Nome do repositório</label>
@@ -40,7 +48,7 @@ const AddRepositoryForm = () => {
             type="text"
             onChange={(event) => SetRepoName(event.target.value)}
             name="repository"
-            placeholder="nomedousuario/repositório"
+            placeholder="repositório"
             className="form-control"
             id="name"
           />

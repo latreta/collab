@@ -38,8 +38,6 @@ INSTALLED_APPS = [
     "django.contrib.sites",
 
     ## Third parties
-    "rest_framework",
-    "rest_framework.authtoken",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 
-const RepositoryTable = (props) => {
+const RepositoryTable = ({repositories}) => {
   let match = useRouteMatch();
 
   return (
@@ -12,7 +12,7 @@ const RepositoryTable = (props) => {
         </tr>
       </thead>
       <tbody>
-        {props.repositories.map((repository, index) => {
+        {repositories.map((repository, index) => {
           console.log(repository);
           return (
             <tr key={index}>
