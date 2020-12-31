@@ -13,11 +13,10 @@ const RepositoryTable = ({repositories}) => {
       </thead>
       <tbody>
         {repositories.map((repository, index) => {
-          console.log(repository);
           return (
             <tr key={index}>
               <td>
-                <Link to={`${match.url}/${index}`}>{repository.full_name}</Link>
+                <Link to={`${match.url}/${repository.id}`}>{repository.full_name}</Link>
               </td>
             </tr>
           );

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CommitTable = () => {
+const CommitTable = ({commits}) => {
   return (
     <table className="table table-hover">
       <thead>
@@ -11,13 +11,17 @@ const CommitTable = () => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
-            Bugfix - lalalalalala
-          </td>
-          <td>@usuario</td>
-          <td>99/99/9999</td>
-        </tr>
+        {commits.map((commit, index) => {
+          return (
+            <tr key={index}>
+              <td>
+                {commit.fields.message}
+              </td>
+              <td>{commit.fields.author}</td>
+              <td>{commit.fields.commit_date}</td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

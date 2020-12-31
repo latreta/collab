@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Switch, Route, useRouteMatch} from 'react-router-dom';
 import RepositoryDetail from './RepositoryDetail';
 import RepositoryTable from '../app/collab/components/repository-table';
-import API_URL from '../constants';
 import axios from 'axios';
 
 const RepositoriesList = () => {
@@ -10,7 +9,7 @@ const RepositoriesList = () => {
   const [repositories, setRepositories] = useState([]);
 
   useEffect(()=>{
-    axios.get('http://127.0.0.1:8000/repositories/')
+    axios.get('http://127.0.0.1:8000/api/repositories/')
     .then(response => setRepositories(response.data))
     .catch(function(error) {
       console.log(error);

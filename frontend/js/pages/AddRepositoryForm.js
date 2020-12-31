@@ -9,25 +9,6 @@ axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
 const AddRepositoryForm = () => {
   const [repoName, SetRepoName] = useState('');
 
-  const csrftoken = getCookie('csrftoken');
-
-  // TODO: Retirar isso para uma classe separada
-  function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-    }
-
   function addRepository(event) {
     event.preventDefault();
     axios.post("http://127.0.0.1:8000/api/repositories/criar/", {
@@ -42,7 +23,6 @@ const AddRepositoryForm = () => {
       <div className="col-sm-12">
         <h2 className="m-5">{formTitle}</h2>
         <label>Nome do repositório</label>
-        <input type="hidden" name="csrfmiddlewaretoken" value={csrftoken}/>
         <div className="input-group">
           <input
             type="text"

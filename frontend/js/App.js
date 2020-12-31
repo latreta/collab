@@ -1,6 +1,6 @@
 import React from 'react';
 import { hot } from 'react-hot-loader/root';
-import { BrowserRouter as Router, Switch, Route, Link  } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import RepositoriesList from './pages/RepositoriesList';
 import AddRepositoryForm from './pages/AddRepositoryForm';
 
@@ -11,6 +11,11 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+
+import axios from 'axios';
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,28 +32,19 @@ const useStyles = makeStyles((theme) => ({
 const App = (props) => {
   const classes = useStyles();
 
-  const csrftoken = getCookie("csrftoken");
+  console.info(props);
 
-  console.log(csrftoken);
-
-  function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-    }
+  function Logout() {
+    // axios.post('http://127.0.0.1:8000/accounts/logout/')
+    // then(response => {
+    //   console.log(response);
+      
+    // })
+    // .catch(err => console.error(err));
+    console.log("Logging out");
+  }
 
   return (
-    <Router>
       <div>
         <AppBar position="static" color="default">
           <Toolbar>
@@ -67,10 +63,7 @@ const App = (props) => {
             <Link to="/app/repositories" color="inherit">
               Repositórios
             </Link>
-            <form action="/accounts/logout/" method="POST">
-              <input type="hidden" name="csrfmiddlewaretoken" value={csrftoken}/>
-              <button type="submit">Logout</button>
-            </form>
+            <Button onClick={Logout}>Logout</Button>
           </Toolbar>
         </AppBar>
         <div className="p-4 container">
@@ -84,7 +77,6 @@ const App = (props) => {
           </Switch>
         </div>
       </div>
-    </Router>
   );
 };
 
