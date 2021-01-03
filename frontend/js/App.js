@@ -3,6 +3,8 @@ import { hot } from 'react-hot-loader/root';
 import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
 import RepositoriesList from './pages/RepositoriesList';
 import AddRepositoryForm from './pages/AddRepositoryForm';
+import MyAccount from './pages/myaccount';
+
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -115,6 +117,9 @@ const App = (props) => {
         <Switch>
           <Route path="/app/repositories">
             <RepositoriesList />
+          </Route>
+          <Route path="/app/profile">
+            <MyAccount/>
           </Route>
           <Route path="/app/">
             <AddRepositoryForm />

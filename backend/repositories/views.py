@@ -19,17 +19,12 @@ HOST = "http://6a8326daad4a.ngrok.io"
 DAYS_PAST = 150
 
 
-def create_webhook(token, repository):
-
-
+def create_webhook(repository):
     config = {
         "url": "http://{host}/{endpoint}".format(host=HOST, endpoint=ENDPOINT),
         "content_type": "json"
     }
-
     repository.create_hook("web", config, EVENTS, active=True)
-
-    return {"name": repository.name, "full_name": repository.full_name}
 
 
 def index(request):
@@ -45,16 +40,16 @@ def detail(request, id):
 
 
 def get_repository(request):
-    account = SocialAccount.objects.filter(user=request.user)[:1]
-    socialToken = SocialToken.objects.get(account=account)[:1].values("token")
-    userToken = socialToken[0]['token']
+    account = SocialAccount.objects.get(user=request.user)
+    socialToken = SocialToken.objects.get(account=account)
+    userToken = socialToken.token
     payload = json.loads(request.body)
     g = Github(login_or_token=userToken)
 
     login = g.get_user().login
-    repository = g.get_repo("{usuario}/{repositorio}"
+    githubRepository = g.get_repo("{usuario}/{repositorio}"
                             .format(usuario=login, repositorio=payload['repository']))
-    githubRepository = create_webhook(userToken, payload['repository'])
+    create_webhook(githubRepository)
 
     repository = Repository(name=githubRepository.name, full_name=githubRepository.full_name, user_id=request.user)
     repository.save()
