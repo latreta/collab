@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { hot } from 'react-hot-loader/root';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
 import RepositoriesList from './pages/RepositoriesList';
 import AddRepositoryForm from './pages/AddRepositoryForm';
 
@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 const App = (props) => {
   const classes = useStyles();
+  const history = useHistory();
   const [toLogout, setToLogout] = useState(false);
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -57,9 +58,9 @@ const App = (props) => {
     setAnchorEl(null);
   };
 
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
+  const navigateTo = (page) => {
+    history.push(page);
+  }
 
   return (
     <div>
@@ -94,8 +95,8 @@ const App = (props) => {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Repositórios</MenuItem>
-                <MenuItem onClick={handleClose}>Minha Conta</MenuItem>
+                <MenuItem onClick={() => navigateTo('/app/repositories')}>Repositórios</MenuItem>
+                <MenuItem onClick={() => navigateTo('/app/profile')}>Minha Conta</MenuItem>
                 <MenuItem onClick={Logout}>Sair</MenuItem>
               </Menu>
             </div>
