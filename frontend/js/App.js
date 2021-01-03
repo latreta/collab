@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { hot } from 'react-hot-loader/root';
 import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
 import RepositoriesList from './pages/RepositoriesList';
@@ -11,7 +11,6 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import axios from 'axios';
 
@@ -32,11 +31,18 @@ const useStyles = makeStyles((theme) => ({
 
 const App = (props) => {
   const classes = useStyles();
+  const [loggedUser, setLoggedUser] = useState({})
   const history = useHistory();
   const [toLogout, setToLogout] = useState(false);
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
+  useEffect(()=>{
+    axios.get("http://127.0.0.1:8000/user/",)
+    .then(response => setLoggedUser(response.data))
+    .catch(error => console.error(error));
+  }, []);  
 
   if (toLogout === true) {
     location.reload();
@@ -64,9 +70,10 @@ const App = (props) => {
 
   return (
     <div>
+      {/* TODO: Extrair barra para componente separado? */}
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.title} onClick={() => history.push('/app')}>
             Repo Tracker
           </Typography>
           {auth && (
@@ -78,7 +85,8 @@ const App = (props) => {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle />
+                <span style={{fontSize: "16px", marginRight: "15px"}}>Olá, {loggedUser.username}</span>
+                <img style={{borderRadius: "50px", height: "30px", width: "30px"}} src={loggedUser.profile_picture}/>
               </IconButton>
               <Menu
                 id="menu-appbar"

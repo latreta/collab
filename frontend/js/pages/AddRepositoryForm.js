@@ -20,7 +20,7 @@ const AddRepositoryForm = () => {
 
   return (
     <form onSubmit={addRepository}>
-      <div className="col-sm-12">
+      <div className="col-sm-12 text-left">
         <h2 className="m-5">{formTitle}</h2>
         <label>Nome do repositório</label>
         <div className="input-group">
@@ -28,9 +28,9 @@ const AddRepositoryForm = () => {
             type="text"
             onChange={(event) => SetRepoName(event.target.value)}
             name="repository"
-            placeholder="repositório"
+            placeholder="ex: Repositório"
             className="form-control"
-            id="name"
+            id="repository"
           />
         </div>
         <div className="input-group">

@@ -10,15 +10,18 @@ from pytz import timezone
 from .models import Repository
 from commits.models import Commit
 
-HOST = 'http://bc7f9734b75a.ngrok.io'
+
 ENDPOINT = 'app/webhook/'
 GMT_TIMEZONE = timezone('GMT')
 SAO_PAULO_TIMEZONE = timezone('America/Sao_Paulo')
 EVENTS = ['push']
-HOST = "http://bc7f9734b75a.ngrok.io"
+HOST = "http://6a8326daad4a.ngrok.io"
+DAYS_PAST = 150
 
 
-def create_webhook(repository):
+def create_webhook(token, repository):
+
+
     config = {
         "url": "http://{host}/{endpoint}".format(host=HOST, endpoint=ENDPOINT),
         "content_type": "json"
@@ -26,10 +29,11 @@ def create_webhook(repository):
 
     repository.create_hook("web", config, EVENTS, active=True)
 
+    return {"name": repository.name, "full_name": repository.full_name}
+
 
 def index(request):
     user = request.user
-    # repositories = Repository.objects.filter(user_id=user)
     repositories = Repository.objects.all().values()
     return JsonResponse(list(repositories), safe=False)
 
@@ -38,23 +42,24 @@ def detail(request, id):
     repository = get_object_or_404(Repository, pk=id)
     resp = json.dumps(repository.toJson(), indent=4)
     return JsonResponse(resp)
-    # return render(request, 'core/json.html', {'response': repository.__dict__})
 
 
 def get_repository(request):
     account = SocialAccount.objects.filter(user=request.user)[:1]
-    socialToken = SocialToken.objects.filter(account=account)[:1].values("token")
+    socialToken = SocialToken.objects.get(account=account)[:1].values("token")
     userToken = socialToken[0]['token']
-    g = Github(userToken)
-    start_date = datetime.now() - timedelta(150)
-    login = g.get_user().login
     payload = json.loads(request.body)
-    githubRepository = g.get_repo("{usuario}/{repositorio}".format(usuario=login, repositorio=payload['repository']))
+    g = Github(login_or_token=userToken)
 
-    # create_webhook(githubRepository)
+    login = g.get_user().login
+    repository = g.get_repo("{usuario}/{repositorio}"
+                            .format(usuario=login, repositorio=payload['repository']))
+    githubRepository = create_webhook(userToken, payload['repository'])
 
     repository = Repository(name=githubRepository.name, full_name=githubRepository.full_name, user_id=request.user)
     repository.save()
+
+    start_date = datetime.now() - timedelta(DAYS_PAST)
 
     for commit in githubRepository.get_commits(since=start_date):
         objectCommit = commit.commit

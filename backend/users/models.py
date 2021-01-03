@@ -10,6 +10,7 @@ from .managers import UserManager
 class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
     username = models.CharField(max_length=40, unique=True)
     email = models.EmailField(max_length=255, unique=True,null=True, blank=True)
+    profile_picture = models.CharField(max_length=500, blank=True)
     is_staff = models.BooleanField(
         default=False, help_text=_("Designates whether the user can log into this admin " "site.")
     )

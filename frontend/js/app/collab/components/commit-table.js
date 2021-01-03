@@ -12,13 +12,14 @@ const CommitTable = ({commits}) => {
       </thead>
       <tbody>
         {commits.map((commit, index) => {
+          let newDate = new Date(commit.fields.commit_date);
           return (
             <tr key={index}>
               <td>
                 {commit.fields.message}
               </td>
               <td>{commit.fields.author}</td>
-              <td>{commit.fields.commit_date}</td>
+              <td>{newDate.toLocaleDateString()}</td>
             </tr>
           );
         })}
