@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 const CommitTable = ({commits}) => {
   return (
@@ -8,6 +9,7 @@ const CommitTable = ({commits}) => {
           <th>Mensagem do commit</th>
           <th>Autor</th>
           <th>Data</th>
+          <th>Repositório</th>
         </tr>
       </thead>
       <tbody>
@@ -20,6 +22,7 @@ const CommitTable = ({commits}) => {
               </td>
               <td>{commit.fields.author}</td>
               <td>{newDate.toLocaleDateString()}</td>
+              <td><Link to={`/app/repositories/${commit.fields.repository_id}`}>{commit.fields.repository_id}</Link></td>
             </tr>
           );
         })}

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router
 import RepositoriesList from './pages/RepositoriesList';
 import AddRepositoryForm from './pages/AddRepositoryForm';
 import MyAccount from './pages/myaccount';
+import CommitList from './pages/CommitList';
 
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -115,6 +116,9 @@ const App = (props) => {
       </AppBar>
       <div className="p-4 container">
         <Switch>
+        <Route path="/app/commits">
+            <CommitList />
+          </Route>
           <Route path="/app/repositories">
             <RepositoriesList />
           </Route>

@@ -19,7 +19,7 @@ const RepositoriesList = () => {
   return (
     <div>
       <Switch>
-        <Route path={`${match.path}/:repositoryName`}>
+        <Route path={`${match.path}/:repositoryOwner/:repositoryName`}>
           <RepositoryDetail />
         </Route>
         <Route path={match.path}>

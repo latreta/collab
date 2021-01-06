@@ -1,6 +1,5 @@
 from django.db import models
 from repositories.models import Repository
-from users.models import User
 
 
 class Commit(models.Model):
@@ -9,7 +8,6 @@ class Commit(models.Model):
     commit_date = models.DateTimeField('commited at')
     commit_id = models.CharField(max_length=300, unique=True)
     repository_id = models.ForeignKey(Repository, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.message
