@@ -17,7 +17,7 @@ def get_repository_commits(request, repository_name):
         repository_queryset = Repository.objects.get(name=repository_name, user_id=request.user)
         commits_results = Commit.objects.filter(repository_id=repository_queryset)
 
-        response_json = serializers.serialize("json", commits_results)
+        response_json = serializers.serialize("json", commits_results, indent=2, use_natural_foreign_keys=True)
         return HttpResponse(response_json, content_type="text/json-comment-filtered")
 
     except Repository.DoesNotExist:

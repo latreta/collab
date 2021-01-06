@@ -11,6 +11,6 @@ class Commit(models.Model):
     repository_id = models.ForeignKey(Repository, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
-
     def __str__(self):
         return self.message
+
