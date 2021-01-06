@@ -6,17 +6,13 @@ import {
 import CommitTable from '../app/collab/components/commit-table';
 
 const RepositoryDetail = (props) => {
-    const { id } = useParams();
+    const { repositoryName } = useParams();
     const [repository, setRepository] = useState([]);
     const [commits, setCommits] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/api/commits/${id}/`)
+        axios.get(`http://127.0.0.1:8000/api/commits/${repositoryName}/`)
         .then(response => setCommits(response.data))
-        .catch(error => console.log(error));
-
-        axios.get(`http://127.0.0.1:8000/api/repositories/${id}/`)
-        .then(response => setRepository(response.data))
         .catch(error => console.log(error));
     }, []) 
 

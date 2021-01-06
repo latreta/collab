@@ -12,9 +12,9 @@ def get_commits(request):
     return HttpResponse(commits, content_type="text/json-comment-filtered")
 
 
-def get_repository_commits(request, repository_id):
+def get_repository_commits(request, repository_name):
     try:
-        repository_queryset = Repository.objects.get(pk=repository_id, user_id=request.user)
+        repository_queryset = Repository.objects.get(name=repository_name, user_id=request.user)
         commits_results = Commit.objects.filter(repository_id=repository_queryset)
 
         response_json = serializers.serialize("json", commits_results)

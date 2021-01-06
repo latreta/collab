@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const formTitle = 'Cadastrar Repositório';
 
@@ -8,13 +9,14 @@ axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
 
 const AddRepositoryForm = () => {
   const [repoName, SetRepoName] = useState('');
+  const history = useHistory();
 
   function addRepository(event) {
     event.preventDefault();
     axios.post("http://127.0.0.1:8000/api/repositories/criar/", {
       repository: repoName
     },)
-    .then(response => console.log(response))
+    .then(response => history.push(`/app/repositories/${repoName}`))
     .catch(error => console.error(error));
   }
 
