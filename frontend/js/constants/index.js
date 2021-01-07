@@ -1,3 +1,3 @@
-import API_URL from './api';
+import axios from './api';
 
-export default API_URL;
+export default axios;

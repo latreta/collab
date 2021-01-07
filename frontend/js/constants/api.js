@@ -1,3 +1,6 @@
-const API_URL = "http://localhost:5000";
+import axios from 'axios';
 
-export default API_URL;
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+
+export default axios;

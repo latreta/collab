@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { hot } from 'react-hot-loader/root';
-import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import RepositoriesList from './pages/RepositoriesList';
 import AddRepositoryForm from './pages/AddRepositoryForm';
 import MyAccount from './pages/myaccount';
@@ -15,10 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import axios from 'axios';
-
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+import axios from './constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,10 +38,14 @@ const App = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  useEffect(()=>{
+  const retrieveUserData = () => {
     axios.get("http://127.0.0.1:8000/user/",)
     .then(response => setLoggedUser(response.data))
     .catch(error => console.error(error));
+  }
+
+  useEffect(()=>{
+    retrieveUserData();
   }, []);  
 
   if (toLogout === true) {
@@ -107,6 +108,7 @@ const App = (props) => {
                 onClose={handleClose}
               >
                 <MenuItem onClick={() => navigateTo('/app/repositories')}>Repositórios</MenuItem>
+                <MenuItem onClick={() => navigateTo('/app/commits')}>Commits</MenuItem>
                 <MenuItem onClick={() => navigateTo('/app/profile')}>Minha Conta</MenuItem>
                 <MenuItem onClick={Logout}>Sair</MenuItem>
               </Menu>

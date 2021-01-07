@@ -1,10 +1,9 @@
+import axios from '../constants';
 import React, { useEffect, useState } from 'react';
-import { Switch, Route, useRouteMatch} from 'react-router-dom';
-import axios from 'axios';
+
 import CommitTable from '../app/collab/components/commit-table';
 
 const CommitList = () => {
-  let match = useRouteMatch();
   const [commits, setCommits] = useState([]);
 
   const fetchCommits = () => {

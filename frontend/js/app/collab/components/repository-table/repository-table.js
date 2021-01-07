@@ -16,7 +16,7 @@ const RepositoryTable = ({repositories}) => {
           return (
             <tr key={index}>
               <td>
-                <Link to={`${match.url}/${repository.name}`}>{repository.full_name}</Link>
+                <Link to={`${match.url}/${repository.full_name}`}>{repository.full_name}</Link>
               </td>
             </tr>
           );

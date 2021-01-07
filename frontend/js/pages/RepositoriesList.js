@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Switch, Route, useRouteMatch} from 'react-router-dom';
 import RepositoryDetail from './RepositoryDetail';
 import RepositoryTable from '../app/collab/components/repository-table';
-import axios from 'axios';
+import axios from '../constants';
 
 const RepositoriesList = () => {
   let match = useRouteMatch();
