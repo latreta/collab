@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Route, useRouteMatch} from 'react-router-dom';
 import RepositoryDetail from './RepositoryDetail';
+import AddRepositoryForm from './AddRepositoryForm';
 import RepositoryTable from '../app/collab/components/repository-table';
 import axios from '../constants';
 
@@ -23,7 +24,8 @@ const RepositoriesList = () => {
           <RepositoryDetail />
         </Route>
         <Route path={match.path}>
-          <h2>Repositórios cadastrados</h2>
+          <h3>Repositórios cadastrados</h3>
+          <AddRepositoryForm/>
           <RepositoryTable repositories={repositories}/>
         </Route>
       </Switch>

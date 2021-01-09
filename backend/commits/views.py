@@ -1,4 +1,4 @@
-from django.shortcuts import render  # noqa
+from django.core.paginator import Paginator, EmptyPage
 from django.http import HttpResponse
 from django.core import serializers
 from .models import Commit
@@ -6,10 +6,16 @@ from .models import Commit
 from repositories.models import Repository
 
 
-def get_commits(request):
+def get_commits(request, page=1):
     commits = Commit.objects.filter(repository_id__in=Repository.objects.filter(user_id=request.user)).order_by("-commit_date")
-    commits = serializers.serialize("json", commits, indent=2, use_natural_foreign_keys=True)
-    return HttpResponse(commits, content_type="text/json-comment-filtered")
+    paginator = Paginator(commits, 6)
+    try:
+        commits = paginator.page(page)
+        results = serializers.serialize("json", commits, indent=2, use_natural_foreign_keys=True)
+    except EmptyPage:
+        return HttpResponse({"Não existem mais registros"}, status=404, content_type="text/json-comment-filtered")
+
+    return HttpResponse(results, )
 
 
 def get_repository_commits(request, repository_owner, repository_name):

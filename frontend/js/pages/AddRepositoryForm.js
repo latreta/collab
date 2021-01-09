@@ -1,46 +1,50 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from '../constants';
 import { useHistory } from 'react-router-dom';
 
-const formTitle = 'Cadastrar Repositório';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
-axios.defaults.xsrfCookieName = 'csrftoken'
-axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(2),
+    },
+  },
+}));
 
 const AddRepositoryForm = () => {
   const [repoName, SetRepoName] = useState('');
   const history = useHistory();
+  const classes = useStyles();
 
   function addRepository(event) {
     event.preventDefault();
-    axios.post("http://127.0.0.1:8000/api/repositories/criar/", {
-      repository: repoName
-    },)
-    .then(response => history.push(`/app/repositories/${repoName}`))
-    .catch(error => console.error(error));
+    axios
+      .post('http://127.0.0.1:8000/api/repositories/criar/', {
+        repository: repoName,
+      })
+      .then((response) => history.push(`/app/repositories/${repoName}`))
+      .catch((error) => console.error(error));
   }
 
   return (
     <form onSubmit={addRepository}>
-      <div className="col-sm-12 text-left">
-        <h2 className="m-5">{formTitle}</h2>
-        <label>Nome do repositório</label>
-        <div className="input-group">
-          <input
-            type="text"
-            onChange={(event) => SetRepoName(event.target.value)}
-            name="repository"
-            placeholder="ex: Repositório"
-            className="form-control"
+      <div className={classes.root}>
+          <TextField
             id="repository"
+            placeholder="ex: Repositório"
+            name="repository"
+            onChange={(event) => SetRepoName(event.target.value)}
+            label="Nome do Repositório"
+            variant="outlined"
+            size="small"
           />
+          <Button type="submit" variant="outlined" color="primary">
+            Adicionar
+          </Button>
         </div>
-        <div className="input-group">
-          <button type="submit" className="mt-2 btn btn-primary">
-            Cadastrar
-          </button>
-        </div>
-      </div>
     </form>
   );
 };

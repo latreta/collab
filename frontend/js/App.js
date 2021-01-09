@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { hot } from 'react-hot-loader/root';
-import { Switch, Route, useHistory } from 'react-router-dom';
-import RepositoriesList from './pages/RepositoriesList';
-import AddRepositoryForm from './pages/AddRepositoryForm';
-import MyAccount from './pages/myaccount';
-import CommitList from './pages/CommitList';
+import { useHistory } from 'react-router-dom';
 
+import AppRoutes from './routes';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -14,8 +11,10 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-
 import axios from './constants';
+
+const USERNAME_KEY = 'USERNAME';
+const PROFILE_PIC_KEY = 'PROFILE_PIC';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,22 +30,37 @@ const useStyles = makeStyles((theme) => ({
 
 const App = (props) => {
   const classes = useStyles();
-  const [loggedUser, setLoggedUser] = useState({})
+  const [loggedUser, setLoggedUser] = useState({});
   const history = useHistory();
   const [toLogout, setToLogout] = useState(false);
-  const [auth, setAuth] = React.useState(true);
+  const [auth, setAuth] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
   const retrieveUserData = () => {
-    axios.get("http://127.0.0.1:8000/user/",)
-    .then(response => setLoggedUser(response.data))
-    .catch(error => console.error(error));
-  }
+    const data = {
+      "username": window.localStorage.getItem(USERNAME_KEY),
+      "profile_picture": window.localStorage.getItem(PROFILE_PIC_KEY)
+    };
+    if (data.USERNAME === null && data.PROFILE_PICTURE === null) {
+      
+      axios
+        .get('http://127.0.0.1:8000/user/')
+        .then((response) => {
+          setLoggedUser(response.data);
+          window.localStorage.setItem(USERNAME_KEY, response.data.username),
+          window.localStorage.setItem(PROFILE_PIC_KEY, response.data.profile_picture)
+        })
+        .catch((error) => console.error(error));
+    } else {
+      setLoggedUser(data);
+    }    
+    setAuth(true);
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     retrieveUserData();
-  }, []);  
+  }, []);
 
   if (toLogout === true) {
     location.reload();
@@ -70,7 +84,8 @@ const App = (props) => {
 
   const navigateTo = (page) => {
     history.push(page);
-  }
+    handleClose();
+  };
 
   return (
     <div>
@@ -89,8 +104,13 @@ const App = (props) => {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <span style={{fontSize: "16px", marginRight: "15px"}}>Olá, {loggedUser.username}</span>
-                <img style={{borderRadius: "50px", height: "30px", width: "30px"}} src={loggedUser.profile_picture}/>
+                <span style={{ fontSize: '16px', marginRight: '15px' }}>
+                  Olá, {loggedUser.username}
+                </span>
+                <img
+                  style={{ borderRadius: '50px', height: '30px', width: '30px' }}
+                  src={loggedUser.profile_picture}
+                />
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -117,20 +137,7 @@ const App = (props) => {
         </Toolbar>
       </AppBar>
       <div className="p-4 container">
-        <Switch>
-        <Route path="/app/commits">
-            <CommitList />
-          </Route>
-          <Route path="/app/repositories">
-            <RepositoriesList />
-          </Route>
-          <Route path="/app/profile">
-            <MyAccount/>
-          </Route>
-          <Route path="/app/">
-            <AddRepositoryForm />
-          </Route>
-        </Switch>
+        <AppRoutes />
       </div>
     </div>
   );
