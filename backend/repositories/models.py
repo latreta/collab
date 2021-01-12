@@ -18,5 +18,5 @@ class Repository(models.Model):
         return self.full_name
 
     def natural_key(self):
-        return self.full_name
+        return {"repository_name": self.name, "repository_owner": self.user_id.username}
 

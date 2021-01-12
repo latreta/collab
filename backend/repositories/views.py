@@ -1,6 +1,7 @@
 import json
 
 from allauth.socialaccount.models import SocialToken, SocialAccount
+from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from github import Github
@@ -28,15 +29,15 @@ def create_webhook(repository):
 
 
 def index(request):
-    user = request.user
-    repositories = Repository.objects.all().values()
-    return JsonResponse(list(repositories), safe=False)
+    repositories = Repository.objects.filter(user_id=request.user)
+    repositoriesJson = serializers.serialize("json", repositories, indent=2, use_natural_foreign_keys=True)
+    return HttpResponse(repositoriesJson, content_type="text/json-comment-filtered")
 
 
 def detail(request, id):
     repository = get_object_or_404(Repository, pk=id)
-    resp = json.dumps(repository.toJson(), indent=4)
-    return JsonResponse(resp)
+    repository = serializers.serialize("json", repository, indent=2, use_natural_foreign_keys=True)
+    return HttpResponse(repository, content_type="text/json-comment-filtered")
 
 
 def get_repository(request):

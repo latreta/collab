@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,31 +17,34 @@ const useStyles = makeStyles({
   container: {
     maxHeight: 440,
   },
+  commitMessage: {
+    width: '300px',
+  }
 });
 
 const columns = [
-  { id: 'message', label: 'Mensagem do Commit', minWidth: 170 },
+  { id: 'message', label: 'Mensagem do Commit', width: '300px', },
   {
     id: 'author',
     label: 'Autor',
-    minWidth: 170,
+    width: 170,
     align: 'right',
   },
   {
     id: 'date',
     label: 'Data',
-    minWidth: 170,
+    width: 170,
     align: 'right',
   },
   {
     id: 'repository',
     label: 'Repositório',
-    minWidth: 170,
+    width: 170,
     align: 'right',
   },
 ];
 
-const CommitTable = ({ commits }) => {
+const CommitTable = ({ commits, displayRepositoryName }) => {
   const classes = useStyles();
 
   return (
@@ -63,12 +66,12 @@ const CommitTable = ({ commits }) => {
           <TableBody>
             {commits.map((commit, index) => (
               <TableRow key={index}>
-                <TableCell>{commit.fields.message}</TableCell>
+                <TableCell className={classes.commitMessage}>{commit.fields.message}</TableCell>
                 <TableCell align="right">{commit.fields.author}</TableCell>
                 <TableCell align="right">
                   {new Date(commit.fields.commit_date).toLocaleDateString()}
                 </TableCell>
-                <TableCell align="right"><Link to={`/app/repositories/${commit.fields.repository_id}`}>{commit.fields.repository_id}</Link></TableCell>
+                <TableCell align="right"><Link to={`/app/repositories/${commit.fields.repository_id.repository_name}`}>{commit.fields.repository_id.repository_name}</Link></TableCell>
               </TableRow>
             ))}
           </TableBody>

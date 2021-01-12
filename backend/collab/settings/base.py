@@ -18,7 +18,7 @@ SECURE_HSTS_PRELOAD = True
 
 DEBUG = True
 
-ADMINS = (("Admin", "foo@example.com"), ("latreta", "yveshenr@gmail.com"))
+ADMINS = (("latreta", "yveshenr@gmail.com"))
 
 AUTH_USER_MODEL = "users.User"
 
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
 
     ## Third parties
+    "rest_framework",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
