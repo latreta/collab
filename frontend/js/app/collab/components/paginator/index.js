@@ -1,3 +1,3 @@
-import Paginator from './paginator';
+import TablePaginationActions from './paginator';
 
-export default Paginator;
+export default TablePaginationActions;

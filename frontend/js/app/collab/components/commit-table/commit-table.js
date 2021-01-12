@@ -1,84 +1,75 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
-
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+import React, { useState, useEffect } from 'react';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
-const useStyles = makeStyles({
-  root: {
-    width: '100%',
+const CommitTableStyle = makeStyles({
+  table: {
+    minWidth: 500,
   },
-  container: {
-    maxHeight: 440,
-  },
-  commitMessage: {
-    width: '300px',
-  }
 });
 
-const columns = [
-  { id: 'message', label: 'Mensagem do Commit', width: '300px', },
-  {
-    id: 'author',
-    label: 'Autor',
-    width: 170,
-    align: 'right',
-  },
-  {
-    id: 'date',
-    label: 'Data',
-    width: 170,
-    align: 'right',
-  },
-  {
-    id: 'repository',
-    label: 'Repositório',
-    width: 170,
-    align: 'right',
-  },
-];
+const CommitTable = (props) => {
+  const classes = CommitTableStyle();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(6);
+  const {teste, commits, PaginationActions } = props;
 
-const CommitTable = ({ commits, displayRepositoryName }) => {
-  const classes = useStyles();
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    teste();
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   return (
-    <Paper className={classes.root}>
-      <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}>
-                  {column.label}
-                </TableCell>
-              ))}
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label="custom pagination table">
+        <TableBody>
+          {commits.map((commit, index) => (
+            <TableRow key={index}>
+              <TableCell component="th" scope="row">
+                {commit.fields.message}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="right">
+                {commit.fields.author}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="right">
+                {commit.fields.repository_id.repository_name}
+              </TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {commits.map((commit, index) => (
-              <TableRow key={index}>
-                <TableCell className={classes.commitMessage}>{commit.fields.message}</TableCell>
-                <TableCell align="right">{commit.fields.author}</TableCell>
-                <TableCell align="right">
-                  {new Date(commit.fields.commit_date).toLocaleDateString()}
-                </TableCell>
-                <TableCell align="right"><Link to={`/app/repositories/${commit.fields.repository_id.repository_name}`}>{commit.fields.repository_id.repository_name}</Link></TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Paper>
+          ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={[6, 12, 18]}
+              colSpan={3}
+              rowsPerPage={rowsPerPage}
+              count={13}
+              page={page}
+              SelectProps={{
+                inputProps: { 'aria-label': 'rows per page' },
+                native: true,
+              }}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+              ActionsComponent={PaginationActions}
+            />
+          </TableRow>
+        </TableFooter>
+      </Table>
+    </TableContainer>
   );
-};
+}
 
 export default CommitTable;
