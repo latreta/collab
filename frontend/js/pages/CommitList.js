@@ -8,7 +8,11 @@ const CommitList = (props) => {
   const [commits, setCommits] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
 
-  function fetchCommits () {
+  const ChangePage = (newPage) => {
+    setPageNumber(newPage);
+  };
+
+  const fetchCommits = () => {
     axios
       .get(`http://127.0.0.1:8000/api/commits/${pageNumber}`)
       .then((response) => response.data)
@@ -23,9 +27,10 @@ const CommitList = (props) => {
 
   useEffect(() => {
     fetchCommits();
-  }, [pageNumber]);
+  }, []);
 
-  return <CommitTable tryout={this.teste.bind(this)} PaginationActions={TablePaginationActions} commits={commits} />;
+
+  return <CommitTable ref="commitTable" PaginationActions={TablePaginationActions} commits={commits} />;
 };
 
 export default CommitList;
