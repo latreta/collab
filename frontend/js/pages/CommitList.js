@@ -14,7 +14,7 @@ const CommitList = (props) => {
 
   const fetchCommits = () => {
     axios
-      .get(`http://127.0.0.1:8000/api/commits/${pageNumber}`)
+      .get(`http://127.0.0.1:8000/teste/commits`)
       .then((response) => response.data)
       .then((commits) => {
         setCommits(commits);
@@ -30,7 +30,7 @@ const CommitList = (props) => {
   }, []);
 
 
-  return <CommitTable ref="commitTable" PaginationActions={TablePaginationActions} commits={commits} />;
+  return <CommitTable PaginationActions={TablePaginationActions} />;
 };
 
 export default CommitList;

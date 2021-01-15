@@ -4,6 +4,7 @@ django-model-utils
 django-webpack-loader
 django-js-reverse
 django-import-export
+django-celerybeat-status
 django-allauth
 PyGithub
 djangorestframework

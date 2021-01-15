@@ -1,83 +1,97 @@
 import React, { useEffect, useState } from 'react';
-import { DataGrid, ColDef  }  from '@material-ui/data-grid';
-
-// import Table from '@material-ui/core/Table';
-// import TableBody from '@material-ui/core/TableBody';
-// import TableCell from '@material-ui/core/TableCell';
-// import TableContainer from '@material-ui/core/TableContainer';
-// import TableFooter from '@material-ui/core/TableFooter';
-// import TablePagination from '@material-ui/core/TablePagination';
-// import TableRow from '@material-ui/core/TableRow';
-// import Paper from '@material-ui/core/Paper';
+import { Link } from 'react-router-dom';
+import { DataGrid } from '@material-ui/data-grid';
+import axios from '../../../../constants';
 
 const CommitTable = (props) => {
   const [page, setPage] = useState(1);
-  const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { commits } = props;
+  const [rows, setRows] = useState([]);
+  const [count, setCount] = useState([]);
+  const { repository } = props;
   const columns = [
-    { field: 'message', headerName: 'Column 1', width: 150 },
-    { field: 'author', headerName: 'Column 2', width: 150 },
-    { field: 'commit_date', headerName: 'Column 2', width: 150 },
+    {
+      field: 'message',
+      headerName: 'Mensagem do commit',
+      minWidth: 150,
+      width: 250,
+      sortable: false,
+    },
+    { field: 'author', headerName: 'Autor', minWidth: 150, width: 250, sortable: false },
+    {
+      field: 'commit_date',
+      headerName: 'Data do commit',
+      minWidth: 150,
+      width: 250,
+      sortable: false,
+    },
+    {
+      field: 'repository',
+      headerName: 'Repositório',
+      minWidth: 150,
+      width: 250,
+      sortable: false,
+      renderCell: (params) => {
+        return <Link to={`/app/repositories/${params.value}`}>{params.value}</Link>;
+      },
+    },
   ];
 
-  useEffect(() => {},[]);
+  console.log(repository);
 
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
+  const fetchCommits = (repositoryName) => {
+    setLoading(true);
+    if(repositoryName){
+      // TODO: Implementar o viewset no django para filtrar pelo nome
+      // axios
+      // .get(`http://127.0.0.1:8000/teste/commits/?format=json&page=${page}`)
+      // .then((response) => response.data)
+      // .then((data) => {
+      //   setCount(data.count);
+      //   setRows(data.results);
+      // })
+      // .catch((error) => {
+      //   console.error(error);
+      // });
+    }
+    else {
+      axios
+      .get(`http://127.0.0.1:8000/teste/commits/?format=json&page=${page}`)
+      .then((response) => response.data)
+      .then((data) => {
+        setCount(data.count);
+        setRows(data.results);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchCommits();
+  }, [page]);
+
+  const handlePageChange = (params) => {
+    setPage(params.page);
   };
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: 425, width: '100%' }}>
       <DataGrid
-        rows={commits}
-        // columns={columns}
+        rows={rows}
+        columns={columns}
+        disableColumnFilter
         pagination
-        pageSize={5}
-        rowCount={100}
+        pageSize={6}
+        rowCount={count}
         paginationMode="server"
         onPageChange={handlePageChange}
         loading={loading}
       />
     </div>
-    // <TableContainer component={Paper}>
-    //   <Table className={classes.table} aria-label="custom pagination table">
-    //     <TableBody>
-    //       {commits.map((commit, index) => (
-    //         <TableRow key={index}>
-    //           <TableCell component="th" scope="row">
-    //             {commit.fields.message}
-    //           </TableCell>
-    //           <TableCell style={{ width: 160 }} align="right">
-    //             {commit.fields.author}
-    //           </TableCell>
-    //           <TableCell style={{ width: 160 }} align="right">
-    //             {commit.fields.repository_id.repository_name}
-    //           </TableCell>
-    //         </TableRow>
-    //       ))}
-    //     </TableBody>
-    //     <TableFooter>
-    //       <TableRow>
-    //         <TablePagination
-    //           rowsPerPageOptions={[6, 12, 18]}
-    //           colSpan={3}
-    //           rowsPerPage={rowsPerPage}
-    //           count={13}
-    //           page={page}
-    //           SelectProps={{
-    //             inputProps: { 'aria-label': 'rows per page' },
-    //             native: true,
-    //           }}
-    //           onChangePage={handleChangePage}
-    //           onChangeRowsPerPage={handleChangeRowsPerPage}
-    //           ActionsComponent={PaginationActions}
-    //         />
-    //       </TableRow>
-    //     </TableFooter>
-    //   </Table>
-    // </TableContainer>
   );
-}
+};
 
 export default CommitTable;
