@@ -10,13 +10,16 @@ from pytz import timezone
 
 from .models import Repository
 from commits.models import Commit
+from django.conf import settings
 
 
-ENDPOINT = 'app/webhook/'
+# ENDPOINT = 'app/webhook/'
+ENDPOINT = settings.WEBHOOK_ENDPOINT
 GMT_TIMEZONE = timezone('GMT')
 SAO_PAULO_TIMEZONE = timezone('America/Sao_Paulo')
 EVENTS = ['push']
-HOST = "http://6a8326daad4a.ngrok.io"
+# HOST = "http://6a8326daad4a.ngrok.io"
+HOST = settings.WEBHOOK_HOST
 DAYS_PAST = 150
 
 

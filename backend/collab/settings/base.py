@@ -78,8 +78,6 @@ ROOT_URLCONF = "collab.urls"
 LOGIN_REDIRECT_URL = "/app/"
 LOGOUT_REDIRECT = "/accounts/login/"
 
-ACCOUNT_ADAPTER = 'collab.adapters.NoNewUsersAccountAdapter'
-
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 6
@@ -145,6 +143,10 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_ACKS_LATE = True
 CELERY_TIMEZONE = TIME_ZONE
+
+# Webhook
+WEBHOOK_HOST = config("WEBHOOK_HOST", default="")
+WEBHOOK_ENDPOINT = config("WEBHOOK_ENDPOINT", default="")
 
 # Sentry
 SENTRY_DSN = config("SENTRY_DSN", default="")

@@ -46,7 +46,7 @@ const RepositoryTable = ({repositories}) => {
           <TableBody>
             {repositories.map((repository, index) => (
               <TableRow key={index}>
-                {<TableCell><Link to={`/app/repositories/${repository.fields.name}`}>{repository.fields.name}</Link></TableCell>}
+                {<TableCell><Link to={`/app/repositories/${repository.name}`}>{repository.name}</Link></TableCell>}
               </TableRow>
             ))}
           </TableBody>

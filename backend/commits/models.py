@@ -7,8 +7,11 @@ class Commit(models.Model):
     author = models.CharField(max_length=50)
     commit_date = models.DateTimeField('commited at')
     commit_id = models.CharField(max_length=300, unique=True)
-    repository_id = models.ForeignKey(Repository, on_delete=models.CASCADE)
+    repository_id = models.ForeignKey(Repository, related_name="commits", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.message
+
+    class Meta:
+        ordering = ['-commit_date']
 

@@ -11,7 +11,7 @@ const RepositoriesList = () => {
 
   useEffect(()=>{
     axios.get('http://127.0.0.1:8000/api/repositories/')
-    .then(response => setRepositories(response.data))
+    .then(response => setRepositories(response.data.results))
     .catch(function(error) {
       console.log(error);
     });

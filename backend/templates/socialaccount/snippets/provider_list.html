@@ -1,10 +1,22 @@
 {% load socialaccount %}
+{% load static %}
 
-{% get_providers as socialaccount_providers %}
+<main class="text-center" style="width: 100%;max-width: 330px;padding: 15px;margin: auto;">
+  <form>
+    <h1 class="h3 mb-3 fw-normal">Por favor faça login</h1>
+    {% get_providers as socialaccount_providers %}
+    {% for provider in socialaccount_providers %}
+    {% if provider.name == "GitHub" %}
+    <a title="{{provider.name}}" class="btn btn-link btn-lg socialaccount_provider {{provider.id}}"
+     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+      {{provider.name}}
+      <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" style="height:50px" alt="github_logo">
+    </a>
+    {% endif %}
+    {% endfor %}
+    <p class="mt-2 mb-3 text-muted">© 2020</p>
+  </form>
+</main>
 
-{% for provider in socialaccount_providers %}
-{% if provider.id == "openid" %}
-{% endif %}
-<a title="{{provider.name}}" class="btn btn-dark socialaccount_provider {{provider.id}}" 
-     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">{{provider.name}}</a>
-{% endfor %}
+
+

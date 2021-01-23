@@ -1,38 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../constants';
-import {
-    useParams,
-  } from 'react-router-dom';
-import CommitTable from '../app/collab/components/commit-table';
+import { useParams } from 'react-router-dom';
+import CommitsTable from '../app/collab/components/commits-table';
+
+const columns = [
+  { field: 'name', headerName: 'Column 1', width: 150 },
+  { field: 'full_name', headerName: 'Column 2', width: 150 },
+];
+
+const ENDPOINT_REPOSITORIES = 'http://127.0.0.1:8000/api/repositories';
+
 
 const RepositoryDetail = (props) => {
-    const { repositoryName } = useParams();
-    const [repository, setRepository] = useState([]);
-    const [commits, setCommits] = useState([]);
+  const { repositoryName } = useParams();
+  const [repository, setRepository] = useState({});
+  const [commits, setCommits] = useState([]);
 
-    console.log("Teste detalhe")
+  const fetchRepositoryData = () => {
+    axios.get(`${ENDPOINT_REPOSITORIES}/${repositoryName}`)
+    .then((response) => response.data)
+    .then((data) => {
+      setRepository(data);
+    })
+    .catch((err) => console.error(err));
+  }
 
-    const fetchCommitsFromRepository = () => {
-        axios.get(`http://127.0.0.1:8000/api/commits/${repositoryName}/`)
-        .then(response => {
-            setCommits(response.data);
-        })
-        .catch(error => console.log(error));
-    }
+  const fetchRepositoryCommits = () => {
+    axios.get(`${ENDPOINT_REPOSITORIES}/${repositoryName}/commits`)
+    .then((response) => response.data)
+    .then((data) => {
+      setCommits(data.results);
+    })
+    .catch((err) => console.error(err));
+  }
 
-    useEffect(() => {
-        fetchCommitsFromRepository();
-    }, []) 
+  useEffect(() => {
+    fetchRepositoryData();
+    fetchRepositoryCommits();
+  }, []);
 
-    return (
-        <div>
-            <h1>{repository.title}</h1>
-            <h3>{repository.author}</h3>
-            <span>{repository.description}</span>
-            <CommitTable repository={repositoryName}/>
-        </div>
-    )
-}
-
+  return (
+    <div>
+      <h1>{repository.owner}/{repository.name}</h1>
+      <h3>{repository.owner}</h3>
+      {JSON.stringify(commits)}
+    </div>
+  );
+};
 
 export default RepositoryDetail;

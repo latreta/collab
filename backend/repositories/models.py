@@ -17,6 +17,9 @@ class Repository(models.Model):
     def __str__(self):
         return self.full_name
 
+    class Meta:
+        ordering = ['full_name']
+
     def natural_key(self):
         return {"repository_name": self.name, "repository_owner": self.user_id.username}
 
