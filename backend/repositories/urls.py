@@ -6,7 +6,5 @@ from .views import index, get_repository, detail
 
 
 urlpatterns = [
-    path("", index, name="repositories"),
     path("criar/", get_repository, name="criar_repositorio"),
-
 ]

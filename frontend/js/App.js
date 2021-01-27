@@ -13,8 +13,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import axios from './constants';
 
-const USERNAME_KEY = 'USERNAME';
-const PROFILE_PIC_KEY = 'PROFILE_PIC';
+const USERNAME_KEY = 'username';
+const PROFILE_PIC_KEY = 'profile_picture';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,8 +42,7 @@ const App = (props) => {
       "username": window.localStorage.getItem(USERNAME_KEY),
       "profile_picture": window.localStorage.getItem(PROFILE_PIC_KEY)
     };
-    if (data.USERNAME === null && data.PROFILE_PICTURE === null) {
-      
+    if (data.username === null && data.profile_picture === null) {
       axios
         .get('http://127.0.0.1:8000/user/')
         .then((response) => {

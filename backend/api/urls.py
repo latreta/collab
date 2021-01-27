@@ -3,7 +3,7 @@ from django.urls import path, re_path
 from rest_framework import routers
 
 from .viewsets import CommitViewSet, RepositoryViewSet
-from .views import RepositoriesCommitsView
+from .views import RepositoriesCommitsView, get_repository_from_github
 
 router = routers.DefaultRouter()
 router.register(r'commits', CommitViewSet, basename="commits")

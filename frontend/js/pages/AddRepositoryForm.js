@@ -22,7 +22,7 @@ const AddRepositoryForm = () => {
   function addRepository(event) {
     event.preventDefault();
     axios
-      .post('http://127.0.0.1:8000/api/repositories/criar/', {
+      .post('http://127.0.0.1:8000/github/criar/', {
         repository: repoName,
       })
       .then((response) => history.push(`/app/repositories/${repoName}`))

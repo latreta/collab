@@ -21,7 +21,7 @@ class CommitSerializer(ModelSerializer):
         fields = ['id', 'message', 'author', 'commit_date', 'commit_id', 'repository']
 
     def get_repository(self, obj):
-        return obj.repository_id.name
+        return obj.repository.name
 
 
 class RepositorySerializer(ModelSerializer):
@@ -33,7 +33,7 @@ class RepositorySerializer(ModelSerializer):
         fields = ['id', 'name', 'full_name', 'owner']
 
     def get_owner(self, obj):
-        return obj.user_id.username
+        return obj.user.username
 
 
 class RepositoryAndCommitsSerializer(ModelSerializer):
@@ -46,4 +46,4 @@ class RepositoryAndCommitsSerializer(ModelSerializer):
         fields = ['id', 'name', 'full_name', 'commits', 'user']
 
     def get_user(self, obj):
-        return obj.user_id.username
+        return obj.user.username

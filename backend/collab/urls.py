@@ -15,4 +15,5 @@ urlpatterns = [
     path("admin/", admin.site.urls, name="admin"),
     path("jsreverse/", django_js_reverse.views.urls_js, name="js_reverse"),
     path("api/", include("api.urls"), name="api"),
+    path("github/", include("repositories.urls"), name="repositories2")
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

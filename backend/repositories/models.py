@@ -10,7 +10,7 @@ class RepositoryManager(models.Manager):
 class Repository(models.Model):
     name = models.CharField(max_length=120, null=False, blank=False)
     full_name = models.CharField(max_length=120, unique=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     objects = RepositoryManager()
 
@@ -21,5 +21,5 @@ class Repository(models.Model):
         ordering = ['full_name']
 
     def natural_key(self):
-        return {"repository_name": self.name, "repository_owner": self.user_id.username}
+        return {"repository_name": self.name, "repository_owner": self.user.username}
 

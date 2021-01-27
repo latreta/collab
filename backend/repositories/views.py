@@ -32,7 +32,7 @@ def create_webhook(repository):
 
 
 def index(request):
-    repositories = Repository.objects.filter(user_id=request.user)
+    repositories = Repository.objects.filter(user=request.user)
     repositoriesJson = serializers.serialize("json", repositories, indent=2, use_natural_foreign_keys=True)
     return HttpResponse(repositoriesJson, content_type="text/json-comment-filtered")
 
@@ -55,7 +55,7 @@ def get_repository(request):
                             .format(usuario=login, repositorio=payload['repository']))
     create_webhook(githubRepository)
 
-    repository = Repository(name=githubRepository.name, full_name=githubRepository.full_name, user_id=request.user)
+    repository = Repository(name=githubRepository.name, full_name=githubRepository.full_name, user=request.user)
     repository.save()
 
     start_date = datetime.now() - timedelta(DAYS_PAST)
@@ -65,7 +65,7 @@ def get_repository(request):
         dataoriginal = objectCommit.author.date
         commitDate = GMT_TIMEZONE.localize(dataoriginal)
         convertedToBRTDate = commitDate.astimezone(SAO_PAULO_TIMEZONE)
-        c = Commit(message=objectCommit.message[:100], author=objectCommit.author.name, commit_date=convertedToBRTDate, commit_id=commit.sha, repository_id=repository)
+        c = Commit(message=objectCommit.message[:100], author=objectCommit.author.name, commit_date=convertedToBRTDate, commit_id=commit.sha, repository=repository)
         c.save()
 
     return HttpResponse("Sucesso")
