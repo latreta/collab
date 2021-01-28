@@ -18,9 +18,8 @@ ENDPOINT = settings.WEBHOOK_ENDPOINT
 GMT_TIMEZONE = timezone('GMT')
 SAO_PAULO_TIMEZONE = timezone('America/Sao_Paulo')
 EVENTS = ['push']
-# HOST = "http://6a8326daad4a.ngrok.io"
 HOST = settings.WEBHOOK_HOST
-DAYS_PAST = 150
+DAYS_PAST = 250
 
 
 def create_webhook(repository):
@@ -29,18 +28,6 @@ def create_webhook(repository):
         "content_type": "json"
     }
     repository.create_hook("web", config, EVENTS, active=True)
-
-
-def index(request):
-    repositories = Repository.objects.filter(user=request.user)
-    repositoriesJson = serializers.serialize("json", repositories, indent=2, use_natural_foreign_keys=True)
-    return HttpResponse(repositoriesJson, content_type="text/json-comment-filtered")
-
-
-def detail(request, id):
-    repository = get_object_or_404(Repository, pk=id)
-    repository = serializers.serialize("json", repository, indent=2, use_natural_foreign_keys=True)
-    return HttpResponse(repository, content_type="text/json-comment-filtered")
 
 
 def get_repository(request):

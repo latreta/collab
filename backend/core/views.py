@@ -31,22 +31,3 @@ class PayloadView:
         if 'commits' in payload.keys():
             retrieve_commits(payload)
         return HttpResponse("Success")
-
-    def create_webhook(self):
-        account = SocialAccount.objects.filter(user=self.user)[:1]
-        socialToken = SocialToken.objects.filter(account=account)[:1].values("token")
-        userToken = socialToken[0]['token']
-        OWNER = ""
-        REPO_NAME = ""
-        EVENTS = ['push']
-        HOST = ""
-
-        config = {
-            "url": "http://{host}/{endpoint}".format(host=HOST, endpoint=ENDPOINT),
-            "content_type": "json"
-        }
-
-        g = Github(userToken)
-        owner = g.get_user().login
-        repo = g.get_repo("{owner}/{repo_name}".format(owner=OWNER, repo_name=REPO_NAME))
-        repo.create_hook("web", config, EVENTS, active=True)
