@@ -6,11 +6,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
+const ENDPOINT_GITHUB = 'http://127.0.0.1:8000/github/criar/';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
       margin: theme.spacing(2),
     },
+    display: 'flex'
   },
 }));
 
@@ -22,7 +25,7 @@ const AddRepositoryForm = () => {
   function addRepository(event) {
     event.preventDefault();
     axios
-      .post('http://127.0.0.1:8000/github/criar/', {
+      .post(ENDPOINT_GITHUB, {
         repository: repoName,
       })
       .then((response) => history.push(`/app/repositories/${repoName}`))

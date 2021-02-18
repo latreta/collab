@@ -9,7 +9,6 @@
     {% if provider.name == "GitHub" %}
     <a title="{{provider.name}}" class="btn btn-link btn-lg socialaccount_provider {{provider.id}}"
      href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
-      {{provider.name}}
       <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" style="height:50px" alt="github_logo">
     </a>
     {% endif %}
